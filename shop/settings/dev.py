@@ -10,11 +10,14 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
+import os ,sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
+#追加系统的导包路径(目的：1 注册子应用时 可以写的方便点 2 修改django认证模型类时 必须以 应用名.模型名)
+sys.path.insert(0,os.path.join(BASE_DIR,'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -39,6 +42,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'corsheaders',
+
+    # 注册子应用
+     'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -191,4 +197,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#AUTH_USER_MODEL = 'shop.apps.user.models.UserInfo'
+AUTH_USER_MODEL = 'user.UserInfo'
 
