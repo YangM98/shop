@@ -1,6 +1,8 @@
 import re
 from django_redis import get_redis_connection
 from rest_framework import serializers
+from rest_framework_jwt.settings import api_settings
+
 from .models import UserInfo
 
 
@@ -10,16 +12,17 @@ class CreateUserSerializer(serializers.ModelSerializer):
     # 需要校验的字段：[ 'username', 'password', 'password2', 'mobile', 'sms_code', 'allow']
     # 模型中已经存在的字段 ['id', 'username', 'password',  'mobile'] 所以需要序列化器创建以下三个字段
 
-    # 需要序列化的字段['id', 'username', 'mobile']
+    # 需要序列化的字段['id', 'username', 'mobile','token']
     # 需要反序列化的字段[ 'username', 'password', 'password2', 'mobile', 'sms_code', 'allow']
-
+    # write_only  只需要反序列化   read_only  只需要序列化
     password2 = serializers.CharField(label='确认密码', write_only=True)
     sms_code = serializers.CharField(label='短信验证码', write_only=True)
     allow = serializers.CharField(label='同意协议', write_only=True)
+    token  = serializers.CharField(label='token',read_only=True)
 
     class Meta:
         model = UserInfo
-        fields = ('id', 'username', 'password', 'password2', 'mobile', 'sms_code', 'allow')
+        fields = ('id', 'username', 'password', 'password2', 'mobile', 'sms_code', 'allow','token')
 
         extra_kwargs = {
             'username': {
@@ -77,6 +80,15 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
 
+        # 使用jwt生成token
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+        payload = jwt_payload_handler(user)
+
+        token = jwt_encode_handler(payload)
+
+        user.token = token
         return user
 
 
