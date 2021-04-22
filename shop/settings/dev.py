@@ -231,6 +231,7 @@ JWT_AUTH = {
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://Localhost:8080',
+    'http://www.meiduo.site:8080',
 )
 CORS_ALLOW_CREDENTIALS = True  # 允许带cookie
 # 修改django用户认证
