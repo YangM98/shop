@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView,RetrieveAPIView,UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import UserInfo
-from .serializers import CreateUserSerializer
+from .serializers import CreateUserSerializer, UserDetailSerializer, EmailSerializer
+
+
 # Create your views here.
 
 
@@ -40,3 +43,42 @@ class mobileAPIView(APIView):
         }
         # 3 返回响应数据
         return Response(data)
+
+class UserDetialView(RetrieveAPIView):
+    ''' 提供用户详情细信息 '''
+    serializer_class = UserDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+    # 重写get_object（self）方法，返回用户详情模型对象
+    def get_object(self):
+        return self.request.user
+
+class EmailView(UpdateAPIView):
+    ''' 更新邮箱信息'''
+    serializer_class = EmailSerializer
+    permission_classes = [IsAuthenticated]
+
+    # 重写get_object（self）方法，返回用户详情模型对象
+    def get_object(self):
+        return self.request.user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

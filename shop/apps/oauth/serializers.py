@@ -1,7 +1,7 @@
 from django_redis import get_redis_connection
 from rest_framework import serializers
 from .models import OauthQQUser
-from users.models import UserInfo
+from user.models import  UserInfo
 from .utils import check_user_token_openid
 class QQauthUserSerializer(serializers.ModelSerializer):
     # 需要反序列化 字段 username password mobile sms_code access_token

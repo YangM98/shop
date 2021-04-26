@@ -9,7 +9,7 @@ from rest_framework_jwt.settings import api_settings
 from . import utils
 from . import serializers
 # Create your views here.
-logger = settings.LOGGING()
+#logger = settings.LOGGING()
 
 class QQAuthURLView(APIView):
     '''获取qq认证路径'''
@@ -42,7 +42,7 @@ class QQAuthUserView(APIView):
             # 每个QQ的openid是固定的
             openid = oauth.get_open_id(access_token=access_t)
         except Exception as e:
-            logger.info(e)
+            #logger.info(e)
             return  Response({'message':'QQ服务器异常'},status=status.HTTP_503_SERVICE_UNAVAILABLE)
         # 使用openID查询该qq是否在商城绑定过用户
         # 如果没有绑定 则将openID加密后返回前端暂时存储一下 以便后面绑定用户时使用

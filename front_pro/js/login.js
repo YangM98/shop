@@ -82,6 +82,7 @@ var vm = new Vue({
             }
         },
         // qq登录
+        /*
         qq_login: function () {
             var next = this.get_query_string('next') || '/';
             axios.get(this.host + '/oauth/qq/authorization/?next=' + next, {
@@ -95,5 +96,6 @@ var vm = new Vue({
                     console.log(error.response.data);
                 })
         }
+       */
     }
 });

@@ -91,4 +91,25 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.token = token
         return user
 
+class UserDetailSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = UserInfo
+        fields = ('id','username','mobile','email','email_active')
+
+class EmailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserInfo
+        fields = ('id','email')
+        extra_kwargs = {
+            'email':{
+                'required':True
+            }
+        }
+    def update(self, instance, validated_data):
+        instance.email = validated_data['email']
+        instance.save()
+        # 发送邮件
+
+        return instance
